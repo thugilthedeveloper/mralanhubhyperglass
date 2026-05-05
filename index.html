@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mr. Alan's SCIENCE HUB</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --bg-dark: #04050f;
+            --text-main: #f1f5f9;
+            --text-dim: #94a3b8;
+
+            /* Per-card accent colours */
+            --c1a: #38bdf8; --c1b: #6366f1;   /* Progress  – cyan → indigo   */
+            --c2a: #a855f7; --c2b: #ec4899;   /* Resources – purple → pink   */
+            --c3a: #10b981; --c3b: #06b6d4;   /* Study     – emerald → cyan  */
+            --c4a: #f59e0b; --c4b: #ef4444;   /* Lab       – amber → red     */
+            --c5a: #3b82f6; --c5b: #8b5cf6;   /* IITian    – blue → violet   */
+            --c6a: #ef4444; --c6b: #f97316;   /* Video     – red → orange    */
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-dark);
+            background-image:
+                radial-gradient(ellipse 80% 50% at 20% 10%, rgba(56,189,248,.07) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 40% at 80% 90%, rgba(168,85,247,.07) 0%, transparent 60%),
+                radial-gradient(ellipse 40% 30% at 60% 50%, rgba(16,185,129,.04) 0%, transparent 50%);
+            color: var(--text-main);
+            margin: 0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ─────────────────────────────────────────
+           LOADER
+        ───────────────────────────────────────── */
+        #loader {
+            position: fixed; inset: 0;
+            background: #000;
+            z-index: 9999;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            transition: opacity 1.2s ease-out, visibility 1.2s;
+        }
+        .hide-loader { opacity: 0; visibility: hidden; pointer-events: none !important; }
+
+        #logo-wrap {
+            width: 180px; height: 180px;
+            display: flex; align-items: center; justify-content: center;
+            animation: logoFadeIn 1.4s cubic-bezier(0.4,0,0.2,1) forwards, logoSpin 12s linear infinite;
+            opacity: 0;
+        }
+        #logo-wrap img {
+            width: 160px; height: 160px;
+            object-fit: contain;
+            mix-blend-mode: screen;
+        }
+        @keyframes logoFadeIn {
+            0%   { opacity:0; transform:scale(0.55) rotate(0deg); }
+            60%  { opacity:1; transform:scale(1.04) rotate(0deg); }
+            100% { opacity:1; transform:scale(1)    rotate(0deg); }
+        }
+        @keyframes logoSpin {
+            from { transform:rotate(0deg); }
+            to   { transform:rotate(360deg); }
+        }
+
+        @keyframes fillBar { from{width:0%} to{width:100%} }
+        @keyframes bootBlink { 0%,100%{opacity:1} 50%{opacity:.3} }
+        .boot-text { animation: bootBlink 1.4s ease-in-out infinite; }
+        .loader-bar-track {
+            width:200px; height:2px;
+            background:rgba(255,255,255,.08);
+            border-radius:10px; margin-top:36px; overflow:hidden;
+        }
+        .loader-bar-fill {
+            height:100%; width:0%;
+            background:#1a6fff;
+            border-radius:10px;
+            animation: fillBar 9s linear forwards .3s;
+        }
+
+        /* ─────────────────────────────────────────
+           HEADER — staggered entrance
+        ───────────────────────────────────────── */
+        header {
+            padding: 7rem 2rem 9rem;
+            text-align: center;
+            position: relative;
+        }
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 600px; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(56,189,248,.3), rgba(168,85,247,.3), transparent);
+        }
+        .header-title {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(3.2rem, 10vw, 7rem);
+            margin: 0; font-weight: 400; letter-spacing: -2px;
+            background: linear-gradient(135deg, #fff 20%, #38bdf8 55%, #a855f7 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            animation: slideDown .9s cubic-bezier(0.16,1,0.3,1) .2s both;
+        }
+        .header-sub {
+            color: #38bdf8;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 700;
+            letter-spacing: 3px;
+            font-size: .8rem;
+            margin-top: 1rem;
+            animation: slideDown .9s cubic-bezier(0.16,1,0.3,1) .4s both;
+        }
+
+        @keyframes slideDown {
+            from { opacity:0; transform:translateY(-24px); }
+            to   { opacity:1; transform:translateY(0); }
+        }
+
+        /* ─────────────────────────────────────────
+           GRID
+        ───────────────────────────────────────── */
+        .container { max-width:1200px; margin:-4rem auto 6rem; padding:0 2rem; }
+        .grid {
+            display:grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap:1.6rem;
+        }
+        @media (max-width: 1024px) {
+            .grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 640px) {
+            .grid { grid-template-columns: 1fr; }
+        }
+
+        /* ─────────────────────────────────────────
+           CARDS — each with unique accent
+        ───────────────────────────────────────── */
+        .card {
+            position: relative;
+            border-radius: 28px;
+            padding: 2.4rem;
+            display: flex; flex-direction: column;
+            background: rgba(12, 16, 30, 0.7);
+            border: 1px solid rgba(255,255,255,.07);
+            backdrop-filter: blur(24px);
+            overflow: hidden;
+            /* entrance */
+            opacity: 0;
+            transform: translateY(40px);
+            transition:
+                transform .5s cubic-bezier(0.16,1,0.3,1),
+                border-color .4s ease,
+                box-shadow .4s ease,
+                background .4s ease;
+            will-change: transform;
+        }
+        .card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Coloured top-edge glow per card */
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            border-radius: 28px 28px 0 0;
+            background: var(--card-grad);
+            opacity: .9;
+        }
+        /* Ambient glow bleed at top */
+        .card::after {
+            content: '';
+            position: absolute;
+            top: -60px; left: 50%; transform: translateX(-50%);
+            width: 70%; height: 120px;
+            background: var(--card-grad);
+            filter: blur(40px);
+            opacity: .08;
+            pointer-events: none;
+            transition: opacity .4s ease;
+        }
+        .card:hover::after { opacity: .18; }
+
+        /* Per-card gradient variables */
+        .card-1 { --card-grad: linear-gradient(90deg, var(--c1a), var(--c1b)); }
+        .card-2 { --card-grad: linear-gradient(90deg, var(--c2a), var(--c2b)); }
+        .card-3 { --card-grad: linear-gradient(90deg, var(--c3a), var(--c3b)); }
+        .card-4 { --card-grad: linear-gradient(90deg, var(--c4a), var(--c4b)); }
+        .card-5 { --card-grad: linear-gradient(90deg, var(--c5a), var(--c5b)); }
+        .card-6 { --card-grad: linear-gradient(90deg, var(--c6a), var(--c6b)); }
+
+        .card:hover {
+            transform: translateY(-10px) scale(1.012);
+            border-color: rgba(255,255,255,.18);
+            background: rgba(12,16,30,.92);
+            box-shadow:
+                0 24px 60px rgba(0,0,0,.5),
+                0 0 0 1px rgba(255,255,255,.06);
+        }
+
+        /* Badge */
+        .badge {
+            font-family: 'DM Sans', sans-serif;
+            font-size: .7rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            margin-bottom: .9rem;
+            background: var(--card-grad);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Card title */
+        .card h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.55rem;
+            margin: 0 0 1rem 0;
+            font-weight: 800;
+            display: flex; align-items: center; gap: 12px;
+            color: #fff;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+        }
+        /* Emoji icon pill in card titles */
+        .card-icon {
+            font-size: 1.55rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px; height: 44px;
+            border-radius: 12px;
+            flex-shrink: 0;
+            line-height: 1;
+            vertical-align: middle;
+        }
+        .card-1 .card-icon { background: rgba(56,189,248,.15); }
+        .card-2 .card-icon { background: rgba(168,85,247,.15); }
+        .card-3 .card-icon { background: rgba(16,185,129,.15); }
+        .card-4 .card-icon { background: rgba(245,158,11,.15); }
+        .card-5 .card-icon { background: rgba(59,130,246,.15); }
+        .card-6 .card-icon { background: rgba(239,68,68,.15); }
+
+        /* Remove old SVG icon styles */
+
+        /* Message box */
+        .message-box {
+            background: rgba(255,255,255,.03);
+            border-radius: 16px;
+            padding: 1.1rem 1.2rem;
+            font-size: .92rem;
+            color: var(--text-dim);
+            margin-bottom: 1.8rem;
+            line-height: 1.65;
+            flex-grow: 1;
+            border: 1px solid rgba(255,255,255,.04);
+        }
+
+        /* ─────────────────────────────────────────
+           BUTTONS
+        ───────────────────────────────────────── */
+        .btn-group { display:flex; flex-direction:column; gap:9px; }
+
+        .btn {
+            position: relative;
+            display: block;
+            text-decoration: none;
+            padding: 13px 18px;
+            border-radius: 14px;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 700;
+            font-size: .82rem;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            overflow: hidden;
+            transition:
+                transform .25s cubic-bezier(0.34,1.56,0.64,1),
+                box-shadow .25s ease,
+                filter .25s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        /* Shimmer sweep on hover */
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 60%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,.25), transparent);
+            transition: left .45s ease;
+            pointer-events: none;
+        }
+        .btn:hover::after { left: 140%; }
+        .btn:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 10px 30px rgba(0,0,0,.4);
+            filter: brightness(1.1);
+        }
+        .btn:active { transform: scale(.97); }
+
+        /* Gradient primary buttons per card */
+        .card-1 .btn-primary { background: linear-gradient(135deg, var(--c1a), var(--c1b)); color:#fff; box-shadow: 0 4px 20px rgba(56,189,248,.25); }
+        .card-2 .btn-primary { background: linear-gradient(135deg, var(--c2a), var(--c2b)); color:#fff; box-shadow: 0 4px 20px rgba(168,85,247,.25); }
+        .card-3 .btn-primary { background: linear-gradient(135deg, var(--c3a), var(--c3b)); color:#fff; box-shadow: 0 4px 20px rgba(16,185,129,.25); }
+        .card-4 .btn-primary { background: linear-gradient(135deg, var(--c4a), var(--c4b)); color:#fff; box-shadow: 0 4px 20px rgba(245,158,11,.25); }
+        .card-5 .btn-primary { background: linear-gradient(135deg, var(--c5a), var(--c5b)); color:#fff; box-shadow: 0 4px 20px rgba(59,130,246,.25); }
+        .card-6 .btn-primary { background: linear-gradient(135deg, var(--c6a), var(--c6b)); color:#fff; box-shadow: 0 4px 20px rgba(239,68,68,.25); }
+
+        /* Ghost secondary buttons — tinted border matching card colour */
+        .btn-ghost {
+            background: rgba(255,255,255,.04);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,.1) !important;
+        }
+        .card-1 .btn-ghost { border-color: rgba(56,189,248,.25) !important; }
+        .card-2 .btn-ghost { border-color: rgba(168,85,247,.25) !important; }
+        .card-3 .btn-ghost { border-color: rgba(16,185,129,.25) !important; }
+        .card-4 .btn-ghost { border-color: rgba(245,158,11,.25) !important; }
+        .card-5 .btn-ghost { border-color: rgba(59,130,246,.25) !important; }
+        .card-6 .btn-ghost { border-color: rgba(239,68,68,.25) !important; }
+        .btn-ghost:hover { background: rgba(255,255,255,.09); }
+
+        /* ─────────────────────────────────────────
+           WATERMARK
+        ───────────────────────────────────────── */
+        .watermark {
+            position:fixed; bottom:28px; right:28px;
+            padding:11px 22px;
+            background:rgba(255,255,255,.05);
+            border-radius:50px;
+            font-size:.72rem; color:#fff;
+            font-family:'Syne',sans-serif; font-weight:800; letter-spacing:2px;
+            z-index:10000; backdrop-filter:blur(15px) saturate(180%);
+            border:1px solid rgba(255,255,255,.15);
+            box-shadow:0 8px 32px rgba(0,0,0,.4);
+            cursor:pointer; overflow:hidden;
+            animation:float 4s ease-in-out infinite;
+        }
+        .watermark::before {
+            content:''; position:absolute; top:-50%; left:-50%; width:200%; height:200%;
+            background:conic-gradient(from 0deg, transparent, rgba(56,189,248,.3), transparent 40%);
+            animation:rotateLiquid 6s linear infinite; z-index:-1;
+        }
+        @keyframes rotateLiquid { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+        @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+
+        /* ─────────────────────────────────────────
+           MODAL
+        ───────────────────────────────────────── */
+        #changelog-modal {
+            position:fixed; inset:0;
+            background:rgba(2,6,23,.92);
+            backdrop-filter:blur(28px);
+            z-index:20000;
+            display:none; align-items:center; justify-content:center; padding:20px;
+        }
+        .modal-content {
+            background:rgba(12,16,30,.95);
+            border:1px solid rgba(56,189,248,.3);
+            max-width:480px; width:100%;
+            padding:2.5rem; border-radius:28px;
+            position:relative;
+            animation:pop .4s cubic-bezier(0.175,0.885,0.32,1.275);
+            box-shadow: 0 0 60px rgba(56,189,248,.08);
+        }
+        @keyframes pop { from{opacity:0;transform:scale(0.88)} to{opacity:1;transform:scale(1)} }
+
+        /* ─────────────────────────────────────────
+           SCROLL REVEAL keyframe
+        ───────────────────────────────────────── */
+        @keyframes cardReveal {
+            from { opacity:0; transform:translateY(50px); }
+            to   { opacity:1; transform:translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ══ LOADER ══ -->
+<div id="loader">
+    <div id="logo-wrap">
+        <img src="data:image/jpeg;base64,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" alt="HyperOS">
+    </div>
+    <p class="boot-text" style="color:rgba(80,140,255,.5);letter-spacing:6px;margin-top:32px;font-weight:400;font-size:.65rem;font-family:monospace;">BOOTING...</p>
+    <div class="loader-bar-track"><div class="loader-bar-fill"></div></div>
+</div>
+
+<!-- ══ MODAL ══ -->
+<div id="changelog-modal" onclick="toggleModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <h2 style="color:#38bdf8;margin-top:0;font-family:'Syne',sans-serif;display:flex;align-items:center;gap:10px;">
+            <i data-lucide="zap"></i> What's New
+        </h2>
+        <p style="color:#94a3b8;">Patch Version: V4.1.0BETA</p>
+        <hr style="border:0;border-top:1px solid rgba(255,255,255,.08);margin:20px 0;">
+        <ul style="list-style:none;padding:0;color:#fff;line-height:2.1;font-family:'DM Sans',sans-serif;">
+            <li>⚡ 9s Boot sequence</li>
+            <li>💎 Liquid Glass UI</li>
+        <li>🤝🏻 Collaboration with FAST OS</li>
+            <li>🎨 Per-card colour themes + gradient buttons</li>
+            <li>✨ Scroll-reveal card entrance animations</li>
+            <li>🚀 Shimmer hover effects on all buttons</li>
+        </ul>
+        <button class="btn btn-primary card-1" style="width:100%;margin-top:20px;cursor:pointer;border:none;" onclick="toggleModal()">RETURN TO HUB</button>
+    </div>
+</div>
+
+<!-- ══ HEADER ══ -->
+<header>
+    <h1 class="header-title">SCIENCE HUB</h1>
+    <p class="header-sub">COMMAND CENTER V4.1.0</p>
+</header>
+
+<!-- ══ CARDS ══ -->
+<div class="container">
+    <div class="grid">
+
+        <!-- 1 · PROGRESS -->
+        <div class="card card-1">
+            <span class="badge">MONITORING</span>
+            <h2><span class="card-icon">📊</span> Progress Ops</h2>
+            <div class="message-box">Live test score tracking and performance monitoring over time.</div>
+            <div class="btn-group">
+                <a href="https://docs.google.com/spreadsheets/d/1JdslBW3FEQayu7oc8CPvfXFyBRZReu90wX_q4LKcAws/edit" class="btn btn-primary" target="_blank">Test Tracker</a>
+            </div>
+        </div>
+
+        <!-- 2 · RESOURCES -->
+        <div class="card card-2">
+            <span class="badge">RESOURCES</span>
+            <h2><span class="card-icon">🌐</span> Online Resources</h2>
+            <div class="message-box">Top-tier IGCSE revision platforms collated in one place. Past papers, flashcards, and topic notes.</div>
+            <div class="btn-group">
+                <a href="https://www.physicsandmathstutor.com/" class="btn btn-primary" target="_blank">Physics & Maths Tutor</a>
+                <a href="https://www.savemyexams.com/" class="btn btn-ghost" target="_blank">Save My Exams</a>
+                <a href="https://cognitoedu.org/" class="btn btn-ghost" target="_blank">Cognito Education</a>
+                <a href="https://www.igcsepro.org/" class="btn btn-ghost" target="_blank">IGCSE Pro</a>
+            </div>
+        </div>
+
+        <!-- 3 · STUDY DOCS -->
+        <div class="card card-3">
+            <span class="badge">CORE ARCHIVE</span>
+            <h2><span class="card-icon">📖</span> Study Docs</h2>
+            <div class="message-box">Master subject documentation. Comprehensive Physics, Chemistry, and Biology repositories.</div>
+            <div class="btn-group">
+                <a href="https://docs.google.com/document/d/1iF4HYEZEEmT9qjb4Bldfbx13KYMh94-Um_-kHViMEuw/edit" class="btn btn-primary" target="_blank">Physics</a>
+                <a href="https://docs.google.com/document/d/1AI2eNs2-qR5Oj1QOPJSx9u8RQs9JPdA3C3eMQUhhDcg/edit" class="btn btn-ghost" target="_blank">Chemistry</a>
+                <a href="https://docs.google.com/document/d/1jadoijiXUl8PZ7jFdQLXsgN48jirtqTHDonDUyQFEP8/edit" class="btn btn-ghost" target="_blank">Biology</a>
+                <a href="https://drive.google.com/drive/folders/1BAwTy28B3qS6WwNt-tsnYLHrKv8YRGk9" class="btn btn-ghost" target="_blank">Master Notes Drive</a>
+            </div>
+        </div>
+
+        <!-- 4 · LAB -->
+        <div class="card card-4">
+            <span class="badge">LAB DATA</span>
+            <h2><span class="card-icon">🧪</span> Practical Docs</h2>
+            <div class="message-box">Essential guides for practical exams, laboratory procedures, and virtual simulations.</div>
+            <div class="btn-group">
+                <a href="https://docs.google.com/document/d/1XfAtIywverGoCXbbm9boheBdpV13N-4HJ9QDAhYlldY/edit" class="btn btn-primary" target="_blank">View Practical Guide</a>
+                <a href="https://www.scarecrowscience.co.uk/apps/" class="btn btn-ghost" target="_blank">Scarecrow Apps</a>
+                <a href="https://phet.colorado.edu/en/simulations/filter?subjects=chemistry,physics,biology" class="btn btn-ghost" target="_blank">PhET Simulations</a>
+            </div>
+        </div>
+
+        <!-- 5 · IITIAN -->
+        <div class="card card-5">
+            <span class="badge">EXTERNAL INTEL</span>
+            <h2><span class="card-icon">📁</span> IITian Academy</h2>
+            <div class="message-box">Direct access to the IITian Academy IGCSE curriculum drive and the Master Resource archive.</div>
+            <div class="btn-group">
+                <a href="https://drive.google.com/drive/folders/1q3fopldY1tTm6qJm920FlC4oEHOtMdCV" class="btn btn-primary" target="_blank">IITian Academy Drive</a>
+            </div>
+        </div>
+
+        <!-- 6 · VIDEO -->
+        <div class="card card-6">
+            <span class="badge">VISUALS</span>
+            <h2><span class="card-icon">🎬</span> Video Hub</h2>
+            <div class="message-box">Curated YouTube channels for IGCSE science. Study Buddy for Chem & Bio, PLA Academy for Physics.</div>
+            <div class="btn-group">
+                <a href="https://www.youtube.com/@IGCSEStudyBuddy" class="btn btn-primary" target="_blank">IGCSE Study Buddy — Chem & Bio</a>
+                <a href="https://www.youtube.com/@plaacademy" class="btn btn-ghost" target="_blank">PLA Academy — Physics</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="watermark" id="verTrigger" onclick="toggleModal()">V4.1.0BETA 🤝🏻 FAST OS</div>
+
+<script>
+    /* ── Modal ── */
+    function toggleModal() {
+        const m = document.getElementById('changelog-modal');
+        m.style.display = m.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    /* ── Loader hide ── */
+    window.addEventListener('load', () => {
+        setTimeout(() => document.getElementById('loader').classList.add('hide-loader'), 9000);
+    });
+
+    /* ── Scroll-reveal cards with stagger ── */
+    const cards = document.querySelectorAll('.card');
+    const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const idx = [...cards].indexOf(entry.target);
+                entry.target.style.transitionDelay = `${idx * 80}ms`;
+                entry.target.classList.add('visible');
+                io.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1 });
+    cards.forEach(c => io.observe(c));
+
+    /* ── Icons ── */
+    lucide.createIcons();
+</script>
+</body>
+</html>
