@@ -1,1 +1,12 @@
-V4 Stable has been released at https://github.com/thugilthedeveloper/MrAlanHub.git. Not much changes had been made. Stable V4 to be commited
+# Mr. Alan's Hub - Beta Branch
+
+This repository contains the beta and testing versions of the project. 
+
+**Main Release:** [Stable V4](https://github.com/thugilthedeveloper/MrAlanHub)
+**Live Site:** [Official Link]https://mr-alan-hub-official.netlify.app/ https://thugilthedeveloper.github.io/MrAlanHub
+
+## Licensing & Credits
+This project is licensed under the **GNU Affero General Public License v3.0 (AGPLv3)**. 
+Contributors: @thugilthedeveloper, @grigory-hash, and Anonymous Contributor.
+
+See the `LICENSE` and `AUTHORS.md` files for full details.
