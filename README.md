@@ -3,7 +3,7 @@
 This repository contains the beta and testing versions of the project. 
 
 **Main Release:** [Stable V4](https://github.com/thugilthedeveloper/MrAlanHub)
-**Live Site:** [Official Link]https://mr-alan-hub-official.netlify.app/ https://thugilthedeveloper.github.io/MrAlanHub
+**Live Site:** [Netlify Release](https://mr-alan-hub-official.netlify.app/)[Github Pages Release](https://thugilthedeveloper.github.io/MrAlanHub)
 
 ## Licensing & Credits
 This project is licensed under the **GNU Affero General Public License v3.0 (AGPLv3)**. 
