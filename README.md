@@ -1,2 +1,1 @@
-Hosting Mr Alan's Hub V4 (Beta), for people who want to study IGCSE
-Note: This is the official Pre-Release, waiting to be found :)
+V4 Stable has been released at https://github.com/thugilthedeveloper/MrAlanHub.git. Not much changes had been made. Stable V4 to be commited
