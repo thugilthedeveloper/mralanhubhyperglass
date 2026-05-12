@@ -166,25 +166,97 @@
       pointer-events: none;
       filter: blur(35px);
     }
+    
+    /* NEW TITLE ARRANGEMENT with LIQUID 3D "Hyper Glass" */
     .header-title {
       font-family: 'Syne', sans-serif;
-      font-size: clamp(3rem, 9vw, 6.5rem);
+      font-size: clamp(2.8rem, 9vw, 6rem);
       margin: 0;
       font-weight: 800;
       letter-spacing: -2px;
-      background: linear-gradient(135deg, #ffffff 15%, #38bdf8 50%, #c084fc 85%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.5));
       position: relative;
       z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.25rem;
     }
+    .title-line {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: baseline;
+      gap: 0.4rem;
+    }
+    .science-hub {
+      background: linear-gradient(135deg, #ffffff 20%, #38bdf8 55%, #c084fc 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.4));
+    }
+    .x-mark {
+      font-size: 0.8em;
+      background: linear-gradient(135deg, #a5f3fc, #c4b5fd);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700;
+      margin: 0 0.2rem;
+    }
+    /* 3D LIQUID GLASS / WATER EFFECT for "Hyper Glass" */
+    .liquid-word {
+      font-size: 1.1em;
+      font-weight: 900;
+      display: inline-block;
+      background: linear-gradient(145deg, #a0f0ff, #5dade2, #2e86c1, #0b5e9e);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 
+        0px 2px 5px rgba(0, 200, 255, 0.4),
+        0px 4px 12px rgba(0, 120, 255, 0.3),
+        2px 8px 20px rgba(0, 0, 0, 0.5),
+        inset 0px 1px 0px rgba(255,255,255,0.6);
+      animation: liquidShine 4s ease-in-out infinite;
+      position: relative;
+      letter-spacing: -1px;
+    }
+    /* reflective liquid movement */
+    @keyframes liquidShine {
+      0% {
+        background-position: 0% 50%;
+        text-shadow: 0px 2px 5px rgba(0, 200, 255, 0.3), 0px 4px 12px rgba(0, 120, 255, 0.2), 2px 8px 20px rgba(0,0,0,0.4);
+      }
+      50% {
+        background-position: 100% 50%;
+        text-shadow: 0px 3px 8px rgba(64, 224, 255, 0.6), 0px 6px 18px rgba(0, 160, 255, 0.5), 3px 10px 25px rgba(0,0,0,0.6);
+      }
+      100% {
+        background-position: 0% 50%;
+        text-shadow: 0px 2px 5px rgba(0, 200, 255, 0.3), 0px 4px 12px rgba(0, 120, 255, 0.2), 2px 8px 20px rgba(0,0,0,0.4);
+      }
+    }
+    /* add a subtle 3D transform */
+    .liquid-word {
+      transform: perspective(800px) translateZ(4px);
+      display: inline-block;
+    }
+    /* optional tiny water droplet effect on hover */
+    .liquid-word:hover {
+      animation: liquidShine 1.2s ease-in-out infinite;
+      filter: drop-shadow(0 0 6px #00e0ff);
+      transition: 0.2s;
+    }
+    
     .header-sub {
       color: #7bc9ff;
       font-weight: 700;
       letter-spacing: 4px;
       font-size: 0.85rem;
-      margin-top: 1rem;
+      margin-top: 1.2rem;
       text-transform: uppercase;
       backdrop-filter: blur(16px);
       display: inline-block;
@@ -217,6 +289,9 @@
       .container { padding: 0 1rem; }
       header { padding: 5rem 1rem 6rem; }
       .card { padding: 2rem 1.8rem; }
+      .title-line { flex-direction: column; gap: 0.2rem; }
+      .x-mark { font-size: 1.2rem; }
+      .liquid-word { font-size: 1.2em; }
     }
 
     /* ----- LIQUID GLASS CARDS (PREMIUM SHINE) ----- */
@@ -249,7 +324,6 @@
       opacity: 0.95;
       z-index: 2;
     }
-    /* Liquid shine effect */
     .card::after {
       content: '';
       position: absolute;
@@ -261,9 +335,7 @@
       transition: opacity 0.4s;
       z-index: 0;
     }
-    .card:hover::after {
-      opacity: 0.9;
-    }
+    .card:hover::after { opacity: 0.9; }
     .card:hover {
       transform: translateY(-12px) scale(1.02);
       border-color: rgba(255, 255, 255, 0.45);
@@ -537,7 +609,7 @@
       </defs>
     </svg>
   </div>
-  <p class="boot-text">INITIALIZING Hyper Glass</p>
+  <p class="boot-text">INITIALIZING Hyper Glass X Science Hub</p>
   <div class="loader-bar-track"><div class="loader-bar-fill"></div></div>
 </div>
 
@@ -567,10 +639,16 @@
   </div>
 </div>
 
-<!-- MAIN HUB HEADER -->
+<!-- MAIN HUB HEADER - rearranged title with 3D liquid "Hyper Glass" -->
 <header>
   <div class="header-glass"></div>
-  <h1 class="header-title">SCIENCE HUB X Hyper Glass</h1>
+  <div class="header-title">
+    <div class="title-line">
+      <span class="science-hub">SCIENCE HUB</span>
+      <span class="x-mark">X</span>
+    </div>
+    <span class="liquid-word">Hyper Glass</span>
+  </div>
   <p class="header-sub">COMMAND CENTER V4.2.0 For Glass</p>
 </header>
 
