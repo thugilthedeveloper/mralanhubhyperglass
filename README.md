@@ -1,4 +1,4 @@
-# Mr. Alan's Hub - Beta Branch
+# Mr. Alan's Hub - Theme IOS Branch
 
 This repository contains the beta and testing versions of the project. 
 
