@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover" />
+  <title>Mr. Alan's SCIENCE HUB X Hyper Glass THEME</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg-deep: #02030A;
+      --text-bright: #f1f5f9;
+      --text-soft: #b9c7da;
+      --glass-bg: rgba(20, 28, 48, 0.38);
+      --glass-border: rgba(255, 255, 255, 0.22);
+      --glass-highlight: rgba(255, 255, 255, 0.12);
+      --c1a: #38bdf8;
+      --c1b: #6366f1;
+      --c2a: #a855f7;
+      --c2b: #ec4899;
+      --c3a: #10b981;
+      --c3b: #06b6d4;
+      --c4a: #f59e0b;
+      --c4b: #ef4444;
+      --c6a: #ef4444;
+      --c6b: #f97316;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg-deep);
+      background-image: 
+        radial-gradient(ellipse 65% 45% at 20% 15%, rgba(56, 189, 248, 0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 55% 35% at 85% 85%, rgba(168, 85, 247, 0.1) 0%, transparent 55%),
+        repeating-linear-gradient(45deg, rgba(255,255,255,0.01) 0px, rgba(255,255,255,0.01) 1px, transparent 1px, transparent 24px);
+      color: var(--text-bright);
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Liquid overlay */
+    .liquid-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      backdrop-filter: blur(1px);
+    }
+
+    /* ----- LOADER (HyperOS + liquid shine) ----- */
+    #loader {
+      position: fixed;
+      inset: 0;
+      background: #020308;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 1.2s ease-out, visibility 1.2s;
+      backdrop-filter: blur(12px);
+    }
+    .hide-loader {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none !important;
+    }
+    .boot-logo-container {
+      width: 180px;
+      height: 180px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: logoFadeIn 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      opacity: 0;
+    }
+    .boot-logo-glow {
+      position: absolute;
+      width: 160px;
+      height: 160px;
+      background: conic-gradient(from 180deg, #38bdf8, #a855f7, #ff6b9d, #38bdf8);
+      filter: blur(45px);
+      opacity: 0.8;
+      border-radius: 50%;
+      animation: bootPulse 2.8s ease-in-out infinite;
+    }
+    .boot-logo-image {
+      width: 110px;
+      height: 110px;
+      object-fit: contain;
+      z-index: 2;
+      filter: drop-shadow(0 0 20px rgba(56, 189, 248, 0.7));
+      animation: spinLogo 2.5s linear infinite;
+    }
+    @keyframes logoFadeIn {
+      0% { opacity: 0; transform: scale(0.6); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    @keyframes bootPulse {
+      0% { transform: scale(0.9); opacity: 0.5; }
+      50% { transform: scale(1.2); opacity: 0.95; }
+      100% { transform: scale(0.9); opacity: 0.5; }
+    }
+    @keyframes spinLogo {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .boot-text {
+      color: rgba(120, 180, 255, 0.9);
+      letter-spacing: 7px;
+      margin-top: 40px;
+      font-weight: 400;
+      font-size: 0.7rem;
+      font-family: monospace;
+      animation: bootBlink 1.6s ease-in-out infinite;
+    }
+    @keyframes bootBlink {
+      0%, 100% { opacity: 1; text-shadow: 0 0 4px #38bdf8; }
+      50% { opacity: .3; text-shadow: none; }
+    }
+    .loader-bar-track {
+      width: 220px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 40px;
+      margin-top: 30px;
+      overflow: hidden;
+      backdrop-filter: blur(3px);
+    }
+    .loader-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #a855f7, #ec4899);
+      border-radius: 40px;
+      animation: fillBar 9s linear forwards 0.3s;
+      box-shadow: 0 0 10px #38bdf8;
+    }
+    @keyframes fillBar {
+      from { width: 0%; }
+      to { width: 100%; }
+    }
+
+    /* ----- HEADER & LIQUID GLASS ----- */
+    header {
+      padding: 6rem 1.5rem 7rem;
+      text-align: center;
+      position: relative;
+      z-index: 5;
+    }
+    .header-glass {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 30%, rgba(56, 189, 248, 0.25), transparent 80%);
+      pointer-events: none;
+      filter: blur(35px);
+    }
+    
+    /* NEW TITLE ARRANGEMENT with LIQUID 3D "Hyper Glass" */
+    .header-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.8rem, 9vw, 6rem);
+      margin: 0;
+      font-weight: 800;
+      letter-spacing: -2px;
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.25rem;
+    }
+    .title-line {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: baseline;
+      gap: 0.4rem;
+    }
+    .science-hub {
+      background: linear-gradient(135deg, #ffffff 20%, #38bdf8 55%, #c084fc 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.4));
+    }
+    .x-mark {
+      font-size: 0.8em;
+      background: linear-gradient(135deg, #a5f3fc, #c4b5fd);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700;
+      margin: 0 0.2rem;
+    }
+    /* 3D LIQUID GLASS / WATER EFFECT for "Hyper Glass" */
+    .liquid-word {
+      font-size: 1.1em;
+      font-weight: 900;
+      display: inline-block;
+      background: linear-gradient(145deg, #a0f0ff, #5dade2, #2e86c1, #0b5e9e);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 
+        0px 2px 5px rgba(0, 200, 255, 0.4),
+        0px 4px 12px rgba(0, 120, 255, 0.3),
+        2px 8px 20px rgba(0, 0, 0, 0.5),
+        inset 0px 1px 0px rgba(255,255,255,0.6);
+      animation: liquidShine 4s ease-in-out infinite;
+      position: relative;
+      letter-spacing: -1px;
+    }
+    /* reflective liquid movement */
+    @keyframes liquidShine {
+      0% {
+        background-position: 0% 50%;
+        text-shadow: 0px 2px 5px rgba(0, 200, 255, 0.3), 0px 4px 12px rgba(0, 120, 255, 0.2), 2px 8px 20px rgba(0,0,0,0.4);
+      }
+      50% {
+        background-position: 100% 50%;
+        text-shadow: 0px 3px 8px rgba(64, 224, 255, 0.6), 0px 6px 18px rgba(0, 160, 255, 0.5), 3px 10px 25px rgba(0,0,0,0.6);
+      }
+      100% {
+        background-position: 0% 50%;
+        text-shadow: 0px 2px 5px rgba(0, 200, 255, 0.3), 0px 4px 12px rgba(0, 120, 255, 0.2), 2px 8px 20px rgba(0,0,0,0.4);
+      }
+    }
+    /* add a subtle 3D transform */
+    .liquid-word {
+      transform: perspective(800px) translateZ(4px);
+      display: inline-block;
+    }
+    /* optional tiny water droplet effect on hover */
+    .liquid-word:hover {
+      animation: liquidShine 1.2s ease-in-out infinite;
+      filter: drop-shadow(0 0 6px #00e0ff);
+      transition: 0.2s;
+    }
+    
+    .header-sub {
+      color: #7bc9ff;
+      font-weight: 700;
+      letter-spacing: 4px;
+      font-size: 0.85rem;
+      margin-top: 1.2rem;
+      text-transform: uppercase;
+      backdrop-filter: blur(16px);
+      display: inline-block;
+      padding: 0.3rem 1.8rem;
+      border-radius: 60px;
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    /* ----- RESPONSIVE GRID (5 cards) ----- */
+    .container {
+      max-width: 1300px;
+      margin: -3rem auto 4rem;
+      padding: 0 1.8rem;
+      flex: 1;
+      position: relative;
+      z-index: 3;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.8rem;
+    }
+    @media (max-width: 1024px) {
+      .grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+    }
+    @media (max-width: 640px) {
+      .grid { grid-template-columns: 1fr; gap: 1.5rem; }
+      .container { padding: 0 1rem; }
+      header { padding: 5rem 1rem 6rem; }
+      .card { padding: 2rem 1.8rem; }
+      .title-line { flex-direction: column; gap: 0.2rem; }
+      .x-mark { font-size: 1.2rem; }
+      .liquid-word { font-size: 1.2em; }
+    }
+
+    /* ----- LIQUID GLASS CARDS (PREMIUM SHINE) ----- */
+    .card {
+      position: relative;
+      border-radius: 44px;
+      padding: 2.2rem;
+      display: flex;
+      flex-direction: column;
+      background: rgba(15, 22, 45, 0.45);
+      backdrop-filter: blur(20px) saturate(220%);
+      -webkit-backdrop-filter: blur(20px) saturate(220%);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      box-shadow: 0 18px 35px -12px rgba(0, 0, 0, 0.5), inset 0 1px 1.5px rgba(255, 255, 255, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.02) inset;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: transform 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1), border-color 0.3s, box-shadow 0.4s, background 0.3s;
+    }
+    .card.visible { opacity: 1; transform: translateY(0); }
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: var(--card-grad);
+      border-radius: 44px 44px 0 0;
+      opacity: 0.95;
+      z-index: 2;
+    }
+    .card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 30% 10%, rgba(255, 255, 255, 0.2) 2%, transparent 65%);
+      pointer-events: none;
+      border-radius: inherit;
+      opacity: 0.5;
+      transition: opacity 0.4s;
+      z-index: 0;
+    }
+    .card:hover::after { opacity: 0.9; }
+    .card:hover {
+      transform: translateY(-12px) scale(1.02);
+      border-color: rgba(255, 255, 255, 0.45);
+      background: rgba(22, 32, 60, 0.65);
+      box-shadow: 0 35px 60px -15px rgba(0, 0, 0, 0.8), 0 0 0 1.5px rgba(255, 255, 255, 0.2) inset;
+    }
+    .card-1 { --card-grad: linear-gradient(120deg, var(--c1a), var(--c1b)); }
+    .card-2 { --card-grad: linear-gradient(120deg, var(--c2a), var(--c2b)); }
+    .card-3 { --card-grad: linear-gradient(120deg, var(--c3a), var(--c3b)); }
+    .card-4 { --card-grad: linear-gradient(120deg, var(--c4a), var(--c4b)); }
+    .card-6 { --card-grad: linear-gradient(120deg, var(--c6a), var(--c6b)); }
+
+    .badge {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      font-weight: 800;
+      letter-spacing: 2px;
+      margin-bottom: 0.9rem;
+      background: var(--card-grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .card h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.6rem;
+      margin: 0 0 1rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #fff;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    }
+    .card-icon {
+      font-size: 1.7rem;
+      width: 46px;
+      height: 46px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(12px);
+      border: 0.5px solid rgba(255, 255, 255, 0.2);
+    }
+    .message-box {
+      background: rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(12px);
+      border-radius: 28px;
+      padding: 1.1rem 1.2rem;
+      font-size: 0.9rem;
+      color: var(--text-soft);
+      margin-bottom: 1.8rem;
+      line-height: 1.6;
+      flex: 1;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+    .btn-group { display: flex; flex-direction: column; gap: 10px; }
+    .btn {
+      position: relative;
+      text-decoration: none;
+      padding: 14px 18px;
+      border-radius: 24px;
+      font-weight: 700;
+      font-size: 0.8rem;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      overflow: hidden;
+      transition: all 0.25s ease;
+      border: none;
+      cursor: pointer;
+      backdrop-filter: blur(12px);
+      display: block;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+    .btn::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+      transition: left 0.55s ease;
+    }
+    .btn:hover::after { left: 140%; }
+    .btn:active { transform: scale(0.97); }
+    .card-1 .btn-primary { background: linear-gradient(135deg, var(--c1a), var(--c1b)); color: #fff; box-shadow: 0 8px 22px rgba(56, 189, 248, .35); }
+    .card-2 .btn-primary { background: linear-gradient(135deg, var(--c2a), var(--c2b)); color: #fff; box-shadow: 0 8px 22px rgba(168, 85, 247, .35); }
+    .card-3 .btn-primary { background: linear-gradient(135deg, var(--c3a), var(--c3b)); color: #fff; box-shadow: 0 8px 22px rgba(16, 185, 129, .35); }
+    .card-4 .btn-primary { background: linear-gradient(135deg, var(--c4a), var(--c4b)); color: #fff; box-shadow: 0 8px 22px rgba(245, 158, 11, .35); }
+    .card-6 .btn-primary { background: linear-gradient(135deg, var(--c6a), var(--c6b)); color: #fff; box-shadow: 0 8px 22px rgba(239, 68, 68, .35); }
+    .btn-ghost { background: rgba(255, 255, 255, 0.08); color: #fff; border: 1px solid rgba(255, 255, 255, 0.25); backdrop-filter: blur(8px);}
+    .btn-ghost:hover { background: rgba(255, 255, 255, 0.2); border-color: rgba(255, 255, 255, 0.5);}
+    .dev-badge {
+      background: rgba(239, 68, 68, .25);
+      color: #fca5a5;
+      font-size: .6rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      padding: 5px 12px;
+      border-radius: 30px;
+      border: 1px solid rgba(239, 68, 68, .5);
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin: 6px 0;
+      width: fit-content;
+    }
+
+    /* back page section liquid */
+    .back-page-section {
+      margin-top: 5rem;
+      padding: 2.5rem 1.5rem;
+      background: rgba(10, 14, 30, 0.55);
+      backdrop-filter: blur(30px) saturate(200%);
+      border-top: 1px solid rgba(56, 189, 248, 0.4);
+      border-bottom: 1px solid rgba(168, 85, 247, 0.25);
+    }
+    .bug-container {
+      max-width: 850px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .bug-card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 40px;
+      padding: 1.8rem 2rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(24px);
+      flex: 1 1 240px;
+      transition: 0.2s;
+    }
+    .bug-card:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(255,255,255,0.35); }
+    .instagram-link { color: #ff4d6d; font-weight: 700; text-decoration: none; }
+    .whatsapp-link { color: #2cd370; font-weight: 700; text-decoration: none; }
+    .footer-note { color: #94a3b8; font-size: 0.8rem; text-align: center; margin-top: 2rem; }
+
+    /* watermark glass */
+    .watermark {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      padding: 12px 28px;
+      background: rgba(25, 35, 65, 0.5);
+      backdrop-filter: blur(32px);
+      border-radius: 80px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      cursor: pointer;
+      user-select: none;
+      transition: 0.2s;
+    }
+    .watermark:hover { background: rgba(56, 189, 248, 0.25); border-color: #38bdf8; }
+    hr { border-color: rgba(255, 255, 255, 0.12); margin: 2rem 0; }
+
+    /* Easter egg modal liquid */
+    .easter-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(35px);
+      z-index: 30000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .easter-content {
+      background: linear-gradient(145deg, #0b1120, #1a1f3a);
+      border: 2px solid #facc15;
+      box-shadow: 0 0 90px #facc15;
+      max-width: 450px;
+      width: 100%;
+      padding: 2.5rem;
+      border-radius: 56px;
+      text-align: center;
+      backdrop-filter: blur(20px);
+      animation: easterPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    /* ===== LEGAL SECTION LIQUID ===== */
+    .legal-section {
+      margin: 3rem 1.8rem 5rem;
+      max-width: 1300px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .legal-card {
+      background: rgba(12, 16, 30, 0.5);
+      backdrop-filter: blur(32px) saturate(200%);
+      border-radius: 52px;
+      border: 1px solid rgba(255,255,255,0.18);
+      padding: 2rem 2.2rem;
+      margin-bottom: 2rem;
+      transition: 0.3s;
+      box-shadow: 0 10px 35px -10px rgba(0, 0, 0, 0.4);
+    }
+    .legal-card:hover { border-color: rgba(56, 189, 248, 0.5); background: rgba(18, 24, 44, 0.6);}
+    .legal-card h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.8rem;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 1.2rem;
+      border-left: 5px solid #38bdf8;
+      padding-left: 1.2rem;
+      color: #fff;
+    }
+    .legal-card h3 { margin: 1.5rem 0 0.8rem 0; color: #cbd5e6; font-size: 1.2rem; }
+    .legal-card p, .legal-card li { color: var(--text-soft); line-height: 1.6; margin: 0.8rem 0; }
+    .legal-card ul { margin: 0.5rem 0 0 1.5rem; }
+    .badge-legal {
+      background: linear-gradient(135deg, #38bdf8, #a855f7);
+      display: inline-block;
+      padding: 5px 16px;
+      border-radius: 60px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 1rem;
+    }
+    .legal-highlight {
+      background: rgba(56, 189, 248, 0.12);
+      border-left: 4px solid #38bdf8;
+      padding: 1rem 1.3rem;
+      border-radius: 28px;
+      margin: 1rem 0;
+      backdrop-filter: blur(4px);
+    }
+    @media (max-width: 640px) {
+      .legal-card { padding: 1.5rem; }
+      .legal-section { margin: 2rem 1rem 4rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="liquid-overlay"></div>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="boot-logo-container">
+    <div class="boot-logo-glow"></div>
+    <svg class="boot-logo-image" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="50" cy="50" r="48" stroke="url(#grad1)" stroke-width="4" fill="none" />
+      <path d="M50 15 L65 40 L50 35 L35 40 Z" fill="url(#grad1)" />
+      <path d="M50 85 L35 60 L50 65 L65 60 Z" fill="url(#grad1)" />
+      <path d="M15 50 L40 35 L35 50 L40 65 Z" fill="url(#grad1)" />
+      <path d="M85 50 L60 65 L65 50 L60 35 Z" fill="url(#grad1)" />
+      <circle cx="50" cy="50" r="12" fill="url(#grad2)" />
+      <defs>
+        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#38bdf8" /><stop offset="100%" stop-color="#a855f7" />
+        </linearGradient>
+        <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#ffffff" /><stop offset="100%" stop-color="#cbd5e1" />
+        </linearGradient>
+      </defs>
+    </svg>
+  </div>
+  <p class="boot-text">INITIALIZING Hyper Glass X Science Hub</p>
+  <div class="loader-bar-track"><div class="loader-bar-fill"></div></div>
+</div>
+
+<!-- CHANGELOG MODAL -->
+<div id="changelog-modal" style="position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(40px);z-index:20000;display:none;align-items:center;justify-content:center;padding:20px;" onclick="toggleModal()">
+  <div class="modal-content" style="background:rgba(12,16,30,.92);border:1px solid rgba(56,189,248,.5);max-width:480px;width:100%;padding:2.5rem;border-radius:48px;backdrop-filter:blur(12px);" onclick="event.stopPropagation()">
+    <h2 style="color:#38bdf8;margin-top:0;font-family:'Syne',sans-serif;display:flex;align-items:center;gap:10px;"><i data-lucide="zap"></i> What's New</h2>
+    <p style="color:#94a3b8;">Patch Version: V4.2.0</p>
+    <hr style="border:0;border-top:1px solid rgba(255,255,255,.1);margin:20px 0;">
+    <ul style="list-style:none;padding:0;color:#fff;line-height:2.1;">
+      <li>⚡ 9s Boot + Liquid Glass Evolution</li><li>💎 Hyper-Glossy Cards</li><li>🤝🏻 Collaboration with FAST OS</li>
+      <li>🎨 Unified study archive (IITian + Notes)</li><li>✨ Advanced sheen & glass hover</li><li>🚀 Immersive blur effects</li>
+      <li>📱 Fully responsive + fluid shine</li><li>⚖️ Official Copyright & Terms section</li>
+    </ul>
+    <button class="btn btn-primary card-1" style="width:100%;margin-top:20px;cursor:pointer;border:none;background:linear-gradient(135deg, #38bdf8, #6366f1);color:#fff;padding:14px;border-radius:30px;font-weight:700;" onclick="toggleModal()">RETURN TO HUB</button>
+  </div>
+</div>
+
+<!-- EASTER EGG MODAL -->
+<div id="easter-egg-modal" class="easter-modal" onclick="closeEasterEgg()">
+  <div class="easter-content" onclick="event.stopPropagation()">
+    <span style="font-size:4rem;">🧬✨</span>
+    <h2 style="font-family:'Syne',sans-serif; color:#facc15; margin:1rem 0;">ADVANCED PROTOCOL UNLOCKED</h2>
+    <p style="color:#e2e8f0; font-size:1.1rem;">You discovered the hidden quantum layer.<br>Spoilers for next version: <strong>"AI – and themes."</strong></p>
+    <p style="color:#94a3b8; margin-top:1.5rem;">🔬 Keep pushing boundaries.</p>
+    <button onclick="closeEasterEgg()" style="margin-top:2rem; background:#facc15; color:#0f172a; border:none; padding:12px 28px; border-radius:40px; font-weight:800; cursor:pointer;">CLOSE PROTOCOL</button>
+  </div>
+</div>
+
+<!-- MAIN HUB HEADER - rearranged title with 3D liquid "Hyper Glass" -->
+<header>
+  <div class="header-glass"></div>
+  <div class="header-title">
+    <div class="title-line">
+      <span class="science-hub">SCIENCE HUB</span>
+      <span class="x-mark">X</span>
+    </div>
+    <span class="liquid-word">Hyper Glass</span>
+  </div>
+  <p class="header-sub">COMMAND CENTER V4.2.0 For Glass</p>
+</header>
+
+<!-- CARDS GRID: UPDATED LAYOUT (5 cards, merged IITian into Study Docs) -->
+<div class="container">
+  <div class="grid">
+    <div class="card card-1">
+      <span class="badge">MONITORING</span>
+      <h2><span class="card-icon">📊</span> Progress Ops</h2>
+      <div class="message-box">Live test score tracking and performance monitoring over time.</div>
+      <div class="btn-group"><a href="https://docs.google.com/spreadsheets/d/1JdslBW3FEQayu7oc8CPvfXFyBRZReu90wX_q4LKcAws/edit" class="btn btn-primary" target="_blank">Test Tracker</a></div>
+    </div>
+    <div class="card card-2">
+      <span class="badge">RESOURCES</span>
+      <h2><span class="card-icon">🌐</span> Online Resources</h2>
+      <div class="message-box">Top-tier IGCSE revision platforms collated in one place.</div>
+      <div class="btn-group">
+        <a href="https://www.physicsandmathstutor.com/" class="btn btn-primary" target="_blank">Physics & Maths Tutor</a>
+        <a href="https://www.savemyexams.com/" class="btn btn-ghost" target="_blank">Save My Exams</a>
+        <a href="https://cognitoedu.org/" class="btn btn-ghost" target="_blank">Cognito</a>
+        <a href="https://www.igcsepro.org/" class="btn btn-ghost" target="_blank">IGCSE Pro</a>
+      </div>
+    </div>
+    
+    <!-- STUDY DOCS CARD: Mr.Alan notes + Textbook Drive + IITian Academy Drive (no individual physics/chem/bio) -->
+    <div class="card card-3">
+      <span class="badge">CORE ARCHIVE</span>
+      <h2><span class="card-icon">📖</span> Study Docs</h2>
+      <div class="message-box">Physics, Chemistry, Biology repositories & Mr. Alan notes. Unified master archive.</div>
+      <div class="btn-group">
+        <a href="https://drive.google.com/drive/folders/13kc-hxu9JDubd1okyR6ACtg106etZC10" class="btn btn-primary" target="_blank">Mr. Alan 📘 Notes</a>
+        <a href="https://drive.google.com/drive/folders/1BAwTy28B3qS6WwNt-tsnYLHrKv8YRGk9" class="btn btn-ghost" target="_blank">Textbook Drive</a>
+        <a href="https://drive.google.com/drive/folders/1q3fopldY1tTm6qJm920FlC4oEHOtMdCV" class="btn btn-ghost" target="_blank">IITian Academy Drive</a>
+        <span class="dev-badge">📚 Mr.Alan Notes Under Construction</span>
+      </div>
+    </div>
+    
+    <div class="card card-4">
+      <span class="badge">LAB DATA</span>
+      <h2><span class="card-icon">🧪</span> Practical Docs</h2>
+      <div class="message-box">Essential guides for practical exams & virtual simulations.</div>
+      <div class="btn-group">
+        <a href="https://docs.google.com/document/d/1XfAtIywverGoCXbbm9boheBdpV13N-4HJ9QDAhYlldY/edit" class="btn btn-primary" target="_blank">Practical Guide</a>
+        <a href="https://www.scarecrowscience.co.uk/apps/" class="btn btn-ghost" target="_blank">Scarecrow Apps</a>
+        <a href="https://phet.colorado.edu/en/simulations/filter?subjects=chemistry,physics,biology" class="btn btn-ghost" target="_blank">PhET Sims</a>
+      </div>
+    </div>
+    
+    <div class="card card-6">
+      <span class="badge">VISUALS</span>
+      <h2><span class="card-icon">🎬</span> Video Hub</h2>
+      <div class="message-box">Curated YouTube channels for IGCSE science.</div>
+      <div class="btn-group">
+        <a href="https://www.youtube.com/@IGCSEStudyBuddy" class="btn btn-primary" target="_blank">Study Buddy</a>
+        <a href="https://www.youtube.com/@plaacademy" class="btn btn-ghost" target="_blank">PLA Academy</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BUG REPORT SECTION -->
+<div class="back-page-section">
+  <div class="bug-container">
+    <div class="bug-card"><div class="bug-title"><i data-lucide="instagram" style="color:#e1306c;"></i> Instagram</div><div class="bug-detail"><a href="https://instagram.com/grigoriy6767" target="_blank" class="instagram-link">@grigoriy6767</a></div><div class="bug-sub" style="color:#94a3b8; font-size:0.8rem;">Bug reports & feedback</div></div>
+    <div class="bug-card"><div class="bug-title"><i data-lucide="message-circle" style="color:#25D366;"></i> WhatsApp</div><div class="bug-detail"><span class="whatsapp-link">+65 859923389</span></div><div class="bug-sub" style="color:#94a3b8; font-size:0.8rem;">Direct bug reports (text)</div></div>
+  </div>
+  <hr /><div class="footer-note">⚡ Report anomalies · help improve SCIENCE HUB · FAST OS collaboration</div>
+</div>
+
+<!-- LEGAL SECTION (unchanged content, enhanced glass styling) -->
+<div class="legal-section">
+  <div class="legal-card">
+    <div class="badge-legal">© 2026 | OFFICIAL COPYRIGHT & LICENSE</div>
+    <h2><i data-lucide="scale"></i> Copyright & Software License</h2>
+    <p><strong>Copyright (C) 2026 @thugilthedeveloper, @grigorythehacker, and Anonymous Contributor.</strong> All rights reserved. The design, source code, UI/UX, and original content of "Mr. Alan's SCIENCE HUB" are protected under international copyright laws.</p>
+    <div class="legal-highlight">
+      <strong>📄 Permissive License (MIT + Attribution)</strong><br>
+      Permission is granted to use, copy, modify, merge, publish, distribute, sublicense, or sell copies of this software, provided that the above copyright notice, this permission notice, and the original contributor credits (<strong>@thugilthedeveloper, @grigory-hash, Anonymous Contributor</strong>) appear in all copies or substantial portions. For commercial redistribution, explicit mention of "Mr. Alan's SCIENCE HUB" as original source is required. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+    </div>
+    <p>🔗 <strong>External Links:</strong> All resources linked (Google Drive, YouTube, IITian Academy, etc.) retain their own copyrights. The Hub indexes educational content for fair use & non-commercial learning.</p>
+  </div>
+
+  <div class="legal-card">
+    <h2><i data-lucide="file-text"></i> Terms & Conditions – SCIENCE HUB</h2>
+    <p><strong>Effective: 11 May 2026 | Version 1.1</strong></p>
+    <h3>1. Acceptance</h3><p>By accessing SCIENCE HUB, you agree to these Terms. If you disagree, please discontinue use.</p>
+    <h3>2. User Conduct</h3><p>Use the platform only for lawful educational purposes. Do not reverse-engineer, scrape, or misuse any part of the service.</p>
+    <h3>3. Intellectual Property</h3><p>Original code, graphics, and trademarks belong to the Copyright Holders. Third-party resources are property of their respective owners.</p>
+    <h3>4. Disclaimer</h3><p>Information is for general educational use. We do not guarantee error-free or complete content. External drives/docs are third-party managed; we are not liable for changes or unavailability.</p>
+    <h3>5. Limitation of Liability</h3><p>To the maximum extent permitted by law, the contributors shall not be liable for any indirect, incidental, or consequential damages arising from use of the Hub.</p>
+    <h3>6. External Links</h3><p>We do not control or endorse third-party websites. Access them at your own risk.</p>
+    <h3>7. Changes to Terms</h3><p>We may update these Terms. Continued use implies acceptance. Major changes will be announced via the changelog modal.</p>
+    <h3>8. Termination</h3><p>Violation of these Terms may result in restricted access or revocation of the license granted herein.</p>
+    <h3>9. Governing Law</h3><p>These Terms are governed by the laws of Singapore and international copyright conventions.</p>
+    <h3>10. Contact</h3><p>Legal inquiries or DMCA takedown notices: Instagram <strong>@grigoriy676767</strong> or WhatsApp <strong>+65 859923389</strong>.</p>
+    <hr><p style="font-size:0.85rem;">Last updated: 11 May 2026 — SCIENCE HUB V4.2.0 “FAST OS Collaboration”</p>
+  </div>
+
+  <div class="legal-card">
+    <h2><i data-lucide="globe"></i> Open Source Acknowledgements</h2>
+    <p>This project uses <strong>Lucide Icons, Google Fonts (Syne & DM Sans)</strong> under their respective licenses. The Xiaomi HyperOS style animated logo is an artistic interpretation; no affiliation with Xiaomi Corp. Special thanks to FAST OS collaboration for UI enhancements.</p>
+    <div style="background: rgba(0,0,0,0.3); border-radius: 28px; padding: 1rem; margin-top: 1rem; border-left: 4px solid #facc15;">
+      <p style="font-weight: 700; color: #facc15;">📢 Additional Notice:</p>
+      <p>Unauthorized removal of this copyright notice or attribution credits is a direct violation of the license. The "Mr. Alan's SCIENCE HUB" name and original assets may not be used to mislead or impersonate.</p>
+    </div>
+  </div>
+</div>
+
+<div style="text-align: center; padding: 1.5rem; color: #5b6e8c; font-size: 0.75rem; border-top: 1px solid rgba(255,255,255,0.05);">
+  © 2026 @thugilthedeveloper, @grigorythehacker, Anonymous Contributor — SCIENCE HUB. Licensed under MIT + Attribution. All third-party resources belong to their respective owners.
+</div>
+
+<div class="watermark" id="easterTrigger">V4.2.0 (Hyper Glass Theme) 🤝🏻  FAST OS | Click Here for more info</div>
+
+<script>
+  (function() {
+    window.toggleModal = function() {
+      const m = document.getElementById('changelog-modal');
+      if (m) m.style.display = (m.style.display === 'flex') ? 'none' : 'flex';
+    };
+    window.closeEasterEgg = function() {
+      document.getElementById('easter-egg-modal').style.display = 'none';
+    };
+    const watermark = document.getElementById('easterTrigger');
+    let clickCount = 0, timer = null;
+    watermark.addEventListener('click', function(e) {
+      clickCount++;
+      if (clickCount === 1) {
+        timer = setTimeout(() => {
+          if (clickCount < 5) toggleModal();
+          clickCount = 0; timer = null;
+        }, 1800);
+      }
+      if (clickCount === 5) {
+        clearTimeout(timer); timer = null; clickCount = 0;
+        e.stopPropagation(); e.preventDefault();
+        document.getElementById('easter-egg-modal').style.display = 'flex';
+      }
+    });
+    window.addEventListener('load', function() {
+      setTimeout(() => { const loader = document.getElementById('loader'); if(loader) loader.classList.add('hide-loader'); }, 9000);
+    });
+    const cards = document.querySelectorAll('.card');
+    if (cards.length && window.IntersectionObserver) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const idx = Array.from(cards).indexOf(entry.target);
+            entry.target.style.transitionDelay = (idx * 80) + 'ms';
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+      cards.forEach(c => observer.observe(c));
+    } else { cards.forEach(c => c.classList.add('visible')); }
+    if (window.lucide) lucide.createIcons();
+  })();
+</script>
+</body>
+</html>
