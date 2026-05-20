@@ -1,9 +1,9 @@
-# Mr. Alan's Hub - Theme IOS Branch
+# Mr. Alan's Hub - Fanmade Hyperglass theme
 
-This repository contains the beta and testing versions of the project. 
+This repository contains the outdated V4 version featuring a fanmade Hyperglass theme, originally made by Xiaomi. 
 
 **Main Release:** [Stable V4](https://github.com/thugilthedeveloper/MrAlanHub)
-**Live Site:** [Stable Netlify Release](https://mr-alan-hub-official.netlify.app/) [Github Pages Release](https://thugilthedeveloper.github.io/MrAlanHub) [V5 Beta Github Pages Release](https://thugilthedeveloper.github.io/MrAlanHubBETA)
+**Live Site:** [Stable Netlify Release](https://mr-alan-hub-official.netlify.app/) [Github Pages Release](https://thugilthedeveloper.github.io/MrAlanHub) [V4 Hyperglass Github Pages Release](https://thugilthedeveloper.github.io/MrAlanHubBETA)
 
 
 ## Licensing & Credits
